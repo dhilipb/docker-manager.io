@@ -7,9 +7,9 @@ RUN apt update; \
 
 RUN sed -i "s|DEFAULT@SECLEVEL=2|DEFAULT@SECLEVEL=1|g" /etc/ssl/openssl.cnf
 
-RUN mkdir /opt/manager-server; \
-    MANAGER_VERSION=$(wget -q -O - "https://api.github.com/repos/Manager-io/Manager/releases/latest" | grep -Po '"tag_name": "\K.*?(?=\")'); \
-    wget -q -O - "https://github.com/Manager-io/Manager/releases/download/$MANAGER_VERSION/ManagerServer-linux-x64.tar.gz" | tar -zxC /opt/manager-server; \
+# Download and extract the latest ManagerServer release
+RUN mkdir -p /opt/manager-server && \
+    wget -qO- https://github.com/Manager-io/Manager/releases/latest/download/ManagerServer-linux-x64.tar.gz | tar -xz -C /opt/manager-server && \
     chmod +x /opt/manager-server/ManagerServer
 
 # Run instance of Manager
